@@ -11,5 +11,8 @@
     "url": "git+https://github.com/woohuuaa/fragments.git"
   },
   "author": "REPLACE WITH YOUR NAME",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "prettier": "3.8.3"
+  }
 }
