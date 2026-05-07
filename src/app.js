@@ -38,7 +38,6 @@ app.get('/', (req, res) => {
     status: 'ok',
     description: 'fragments service running normally',
     author,
-    // TODO: change this to use your GitHub username!
     githubUrl: 'https://github.com/woohuuaa/fragments',
     version,
     timestamp: new Date().toISOString(),
