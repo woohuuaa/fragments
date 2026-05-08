@@ -2,70 +2,81 @@
 
 Fragments back-end API
 
-## Setup
+## Quick Setup
 
-Install dependencies before running any scripts:
+Run this first:
 
 ```bash
 npm install
 ```
 
-This installs the packages from `package.json`, including the server dependencies and development tools.
+This installs the app dependencies and the dev tools from `package.json`.
 
-## Scripts
+## Script Notes
 
-### `npm run lint`
+All server commands run `src/server.js`.
 
-Checks the JavaScript files in `src/` with ESLint. Use this to catch style problems and common code issues.
+Default local URL: `http://localhost:8080`
 
-```bash
-npm run lint
-```
-
-### `npm run start`
-
-Starts the API server normally. Use this when you want to run the app locally without file watching or a debugger.
-
-```bash
-npm run start
-```
-
-By default, the server listens on `http://localhost:8080`.
-Set `PORT` if you want to use a different port.
-
-Example:
+Use a different port with:
 
 ```bash
 PORT=3000 npm run start
 ```
 
+Same idea works with `dev` and `debug`.
+
+### `npm run lint`
+
+Quick ESLint check for `src/**/*.js`.
+
+```bash
+npm run lint
+```
+
+Good to run after changing server code and before committing.
+
+### `npm run start`
+
+Plain local run.
+No auto-restart.
+No debugger.
+
+```bash
+npm run start
+```
+
+This does not load `.env.debug`.
+
 ### `npm run dev`
 
-Starts the server in development mode. Use this while actively working on the app.
-
-This command:
-
-- loads environment variables from `.env.debug`
-- runs Node with `--watch`
-- restarts the server automatically when files change
+Normal coding mode.
 
 ```bash
 npm run dev
 ```
 
+What it does:
+
+- loads `.env.debug`
+- runs Node with `--watch`
+- restarts automatically when files change
+
+Reminder: `.env.debug` currently sets `FRAGMENTS_LOG_LEVEL=debug`.
+
 ### `npm run debug`
 
-Starts the server in debug mode. Use this when you want to step through the code with a debugger.
-
-This command:
-
-- loads environment variables from `.env.debug`
-- runs Node with `--watch`
-- restarts the server automatically when files change
-- exposes the Node inspector on `0.0.0.0:9229`
+Use this when stepping through code.
 
 ```bash
 npm run debug
 ```
 
-If you're using VS Code, `.vscode/launch.json` already includes `Debug via npm run debug`.
+What it does:
+
+- loads `.env.debug`
+- runs Node with `--watch`
+- restarts automatically when files change
+- opens the Node inspector on `0.0.0.0:9229`
+
+VS Code launch config already exists in `.vscode/launch.json`: `Debug via npm run debug`.
