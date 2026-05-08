@@ -2,46 +2,70 @@
 
 Fragments back-end API
 
-## Running Scripts
+## Setup
 
-Install dependencies first:
+Install dependencies before running any scripts:
 
 ```bash
 npm install
 ```
 
-Lint the source:
+This installs the packages from `package.json`, including the server dependencies and development tools.
+
+## Scripts
+
+### `npm run lint`
+
+Checks the JavaScript files in `src/` with ESLint. Use this to catch style problems and common code issues.
 
 ```bash
 npm run lint
 ```
 
-Use this to check the files in `src/` for JavaScript style and code quality issues with ESLint.
+### `npm run start`
 
-Start the server:
+Starts the API server normally. Use this when you want to run the app locally without file watching or a debugger.
 
 ```bash
 npm run start
 ```
 
-Use this for a normal local run of the API without file watching or the debugger attached.
+By default, the server listens on `http://localhost:8080`.
+Set `PORT` if you want to use a different port.
 
-The server listens on `http://localhost:8080` by default. Set `PORT` to use a different port.
+Example:
 
-Run in development mode:
+```bash
+PORT=3000 npm run start
+```
+
+### `npm run dev`
+
+Starts the server in development mode. Use this while actively working on the app.
+
+This command:
+
+- loads environment variables from `.env.debug`
+- runs Node with `--watch`
+- restarts the server automatically when files change
 
 ```bash
 npm run dev
 ```
 
-Use this while actively working on the app. It loads `.env.debug` and runs the server with `--watch`, so it restarts when files change.
+### `npm run debug`
 
-Run in debug mode:
+Starts the server in debug mode. Use this when you want to step through the code with a debugger.
+
+This command:
+
+- loads environment variables from `.env.debug`
+- runs Node with `--watch`
+- restarts the server automatically when files change
+- exposes the Node inspector on `0.0.0.0:9229`
 
 ```bash
 npm run debug
 ```
 
-Use this when you want to step through the code with a debugger. It loads `.env.debug`, runs with `--watch`, and starts the Node inspector on `0.0.0.0:9229`.
-
-The `.vscode/launch.json` already includes `Debug via npm run debug`.
+If you're using VS Code, `.vscode/launch.json` already includes `Debug via npm run debug`.
