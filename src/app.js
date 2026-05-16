@@ -9,16 +9,20 @@ const passport = require('passport');
 const authenticate = require('./auth');
 
 const logger = require('./logger');
-const pino = require('pino-http')({
-  // Use our default logger instance, which is already configured
-  logger,
-});
+const morgan = require('morgan');
+// const pino = require('pino-http')({
+//   // Use our default logger instance, which is already configured
+//   logger,
+// });
 
 // Create an express app instance we can use to attach middleware and HTTP routes
 const app = express();
 
-// Use pino logging middleware
-app.use(pino);
+// // Use pino logging middleware
+// app.use(pino);
+
+// Use morgan logging middleware
+app.use(morgan('short'))
 
 // Use helmet security middleware
 app.use(helmet());
