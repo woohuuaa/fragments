@@ -81,4 +81,21 @@ describe('POST /v1/fragments', () => {
       .send(Buffer.from('data'));
     expect(res.statusCode).toBe(415);
   });
+
+  // If fragment.save() throws, the server should return 500
+  test('returns 500 when fragment save fails', async () => {
+    const { Fragment } = require('../../src/model/fragment');
+    jest.spyOn(Fragment.prototype, 'save').mockRejectedValueOnce(new Error('db error'));
+
+    const res = await request(app)
+      .post('/v1/fragments')
+      .auth('test-user1@fragments-testing.com', 'test-password1')
+      .set('Content-Type', 'text/plain')
+      .send(Buffer.from('hello'));
+
+    expect(res.statusCode).toBe(500);
+    expect(res.body.status).toBe('error');
+
+    Fragment.prototype.save.mockRestore();
+  });
 });
