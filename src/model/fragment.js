@@ -4,6 +4,8 @@ const { randomUUID } = require('crypto');
 // Use https://www.npmjs.com/package/content-type to create/parse Content-Type headers
 const contentType = require('content-type');
 
+const logger = require('../logger');
+
 // Functions for working with fragment metadata/data using our DB
 const {
   readFragment,
@@ -43,7 +45,9 @@ class Fragment {
    * @returns Promise<Array<Fragment>>
    */
   static async byUser(ownerId, expand = false) {
+    logger.debug({ ownerId, expand }, 'Getting fragments for user');
     const fragments = await listFragments(ownerId, expand);
+    logger.info({ ownerId, count: fragments.length }, 'Got fragments for user');
     if (expand) {
       return fragments.map((f) => new Fragment(JSON.parse(f)));
     }
@@ -57,8 +61,12 @@ class Fragment {
    * @returns Promise<Fragment>
    */
   static async byId(ownerId, id) {
+    logger.debug({ ownerId, id }, 'Getting fragment by id');
     const fragment = await readFragment(ownerId, id);
-    if (!fragment) throw new Error(`No fragment found with id=${id}`);
+    if (!fragment) {
+      logger.warn({ ownerId, id }, 'Fragment not found');
+      throw new Error(`No fragment found with id=${id}`);
+    }
     // re-create a full Fragment instance after getting from db.
     return new Fragment(fragment);
   }
@@ -70,6 +78,7 @@ class Fragment {
    * @returns Promise<void>
    */
   static delete(ownerId, id) {
+    logger.info({ ownerId, id }, 'Deleting fragment');
     return deleteFragment(ownerId, id);
   }
 
@@ -78,6 +87,7 @@ class Fragment {
    * @returns Promise<void>
    */
   save() {
+    logger.debug({ id: this.id }, 'Saving fragment metadata');
     this.updated = new Date().toISOString();
     return writeFragment(this);
   }
@@ -87,6 +97,7 @@ class Fragment {
    * @returns Promise<Buffer>
    */
   getData() {
+    logger.debug({ id: this.id }, 'Getting fragment data');
     return readFragmentData(this.ownerId, this.id);
   }
 
@@ -97,8 +108,10 @@ class Fragment {
    */
   async setData(data) {
     if (!Buffer.isBuffer(data)) {
+      logger.warn({ id: this.id }, 'setData() requires a Buffer');
       throw new Error('data must be a Buffer');
     }
+    logger.debug({ id: this.id, size: data.length }, 'Setting fragment data');
     //update the metadata whenever the data is changed, so they match
     this.size = data.length;
     this.updated = new Date().toISOString();
