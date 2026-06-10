@@ -1,5 +1,5 @@
 # base images
-FROM node:24.15.0
+FROM node:24
 
 # metadata
 LABEL maintainer="Wan Hua Wu <wwu104@myseneca.ca>"
