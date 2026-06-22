@@ -25,6 +25,65 @@ describe('POST /v1/fragments', () => {
     expect(res.body.status).toBe('ok');
   });
 
+  // HTML fragments should be accepted and the type and size should be correct in the response
+  test('authenticated users can create a text/html fragment', async () => {
+    const body = Buffer.from('<h1>Hello</h1>');
+
+    const res = await request(app)
+      .post('/v1/fragments')
+      .auth('test-user1@fragments-testing.com', 'test-password1')
+      .set('Content-Type', 'text/html')
+      .send(body);
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.fragment.type).toBe('text/html');
+    expect(res.body.fragment.size).toBe(body.length);
+  });
+
+  // Markdown fragments should be accepted and the type and size should be correct in the response
+  test('authenticated users can create a text/markdown fragment', async () => {
+    const body = Buffer.from('# Hello');
+
+    const res = await request(app)
+      .post('/v1/fragments')
+      .auth('test-user1@fragments-testing.com', 'test-password1')
+      .set('Content-Type', 'text/markdown')
+      .send(body);
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.fragment.type).toBe('text/markdown');
+    expect(res.body.fragment.size).toBe(body.length);
+  });
+
+  // JSON fragments should be accepted and the type and size should be correct in the response
+  test('authenticated users can create an application/json fragment', async () => {
+    const body = Buffer.from(JSON.stringify({ message: 'hello' }));
+
+    const res = await request(app)
+      .post('/v1/fragments')
+      .auth('test-user1@fragments-testing.com', 'test-password1')
+      .set('Content-Type', 'application/json')
+      .send(body);
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.fragment.type).toBe('application/json');
+    expect(res.body.fragment.size).toBe(body.length);
+  });
+
+  // Image fragments are not supported yet, so the server should return 415 Unsupported Media Type
+  test('image fragments are not supported yet', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .auth('test-user1@fragments-testing.com', 'test-password1')
+      .set('Content-Type', 'image/png')
+      .send(Buffer.from([1, 2, 3]));
+
+    expect(res.statusCode).toBe(415);
+  });
+
   // The response should include the fragment metadata with id, ownerId, created, updated, type, and size properties
   test('response includes id, ownerId, created, updated, type, size', async () => {
     const res = await request(app)
