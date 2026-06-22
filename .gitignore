@@ -137,3 +137,13 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# AWS/local generated files
+.ssh/
+*.pem
+*.pem:Zone.Identifier
+
+# AWS Amplify generated files
+aws/
+
+.claude/

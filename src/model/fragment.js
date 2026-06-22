@@ -154,7 +154,8 @@ class Fragment {
   static isSupportedType(value) {
     try {
       const { type } = contentType.parse(value);
-      return type === 'text/plain';
+
+      return type.startsWith('text/') || type === 'application/json';
     } catch {
       return false;
     }
