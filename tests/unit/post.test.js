@@ -59,7 +59,7 @@ describe('POST /v1/fragments', () => {
 
   // JSON fragments should be accepted and the type and size should be correct in the response
   test('authenticated users can create an application/json fragment', async () => {
-    const body = Buffer.from(JSON.stringify({ message: 'hello' }));
+    const body = JSON.stringify({ message: 'hello' });
 
     const res = await request(app)
       .post('/v1/fragments')
@@ -70,7 +70,7 @@ describe('POST /v1/fragments', () => {
     expect(res.statusCode).toBe(201);
     expect(res.body.status).toBe('ok');
     expect(res.body.fragment.type).toBe('application/json');
-    expect(res.body.fragment.size).toBe(body.length);
+    expect(res.body.fragment.size).toBe(Buffer.byteLength(body));
   });
 
   // Image fragments are not supported yet, so the server should return 415 Unsupported Media Type
