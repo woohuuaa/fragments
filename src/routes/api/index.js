@@ -33,10 +33,13 @@ router.post('/fragments', rawBody(), require('./post'));
 // GET /v1/fragments
 router.get('/fragments', require('./get'));
 
-// GET /v1/fragments/:id
-router.get('/fragments/:id', require('./get-id'));
-
 // GET /v1/fragments/:id/info
 router.get('/fragments/:id/info', require('./get-info'));
+
+// GET /v1/fragments/:id.ext
+router.get('/fragments/:id.:ext', require('./get-ext'));
+
+// GET /v1/fragments/:id
+router.get('/fragments/:id', require('./get-id'));
 
 module.exports = router;
