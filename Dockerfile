@@ -38,7 +38,9 @@ ENV NODE_ENV=production
 WORKDIR /app
 
 # Install curl for health checks and tini for init process
-RUN apk add --no-cache curl tini
+RUN apk add --no-cache \
+    curl=8.20.0-r1 \
+    tini=0.19.0-r3
 
 # Copy production dependencies from dependencies stage
 COPY --from=dependencies /app/node_modules ./node_modules
