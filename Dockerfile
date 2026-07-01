@@ -39,7 +39,7 @@ WORKDIR /app
 
 # Install curl for health checks and tini for init process
 RUN apk add --no-cache \
-    curl-8.21.0-r0 \
+    curl=8.21.0-r0 \
     tini=0.19.0-r3
 
 # Copy production dependencies from dependencies stage
