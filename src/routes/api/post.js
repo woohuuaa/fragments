@@ -13,7 +13,8 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { type } = contentType.parse(req);
+    // Preserve parameters such as charset in the stored fragment type.
+    const type = contentType.format(contentType.parse(req));
 
     logger.debug({ ownerId: req.user, type }, 'Creating new fragment');
 
