@@ -5,6 +5,8 @@ node_modules/
 tests/
 !tests/.htpasswd
 .env
+.env.*
+!.env.example
 eslint.config.mjs
 .git/
 .gitignore
