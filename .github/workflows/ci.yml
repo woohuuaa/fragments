@@ -95,13 +95,25 @@ jobs:
         # NOTE: we need to install dev dependencies too vs. production only for hurl
         run: npm install
       - name: Build Containers
-        run: docker compose up -d
+        run: docker compose up -d --build
       - name: Setup Local AWS Resources
         # NOTE: this file needs to be made executable *before* you check into git:
         # $ chmod +x ./scripts/local-aws-setup.sh
         run: ./scripts/local-aws-setup.sh
+      - name: Wait for Fragments API
+        run: |
+          timeout 60s bash -c '
+            until curl --fail --silent http://localhost:8080/ > /dev/null; do
+              sleep 2
+            done
+          '
       - name: Run Hurl Tests
         run: npm run test:integration
+      - name: Show Container Logs on Failure
+        if: failure()
+        run: |
+          docker compose ps
+          docker compose logs
 
   docker-hub:
     name: Build and Push to Docker Hub
