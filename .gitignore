@@ -143,7 +143,7 @@ vite.config.ts.timestamp-*
 *.pem
 *.pem:Zone.Identifier
 
-# AWS Amplify generated files
-aws/
+# AWS Amplify generated files in the repository root
+/aws/
 
 .claude/
