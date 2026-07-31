@@ -15,8 +15,11 @@ services:
       # Use Basic Auth (for running tests, CI)
       - HTPASSWD_FILE=tests/.htpasswd
       # Use the FRAGMENTS_LOG_LEVEL set in the host environment, or default to info
-      - FRAGMENTS_LOG_LEVEL=${FRAGMENTS_LOG_LEVEL:-info}
+      - FRAGMENTS_LOG_LEVEL=${FRAGMENTS_LOG_LEVEL:-debug}
       - NODE_ENV=development
+      # Only for local development, we will use the AWS SDK to connect to local versions of S3 and DynamoDB
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
       - AWS_REGION=us-east-1
       # Use the MiniStack endpoint vs. AWS for S3 AWS SDK clients.
       # NOTE: we use Docker's internal network to the ministack container
