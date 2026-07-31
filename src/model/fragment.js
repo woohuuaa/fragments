@@ -49,7 +49,10 @@ class Fragment {
     const fragments = await listFragments(ownerId, expand);
     logger.info({ ownerId, count: fragments.length }, 'Got fragments for user');
     if (expand) {
-      return fragments.map((f) => new Fragment(JSON.parse(f)));
+      return fragments.map((fragment) => {
+        const metadata = typeof fragment === 'string' ? JSON.parse(fragment) : fragment;
+        return new Fragment(metadata);
+      });
     }
     return fragments;
   }
