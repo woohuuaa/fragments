@@ -65,11 +65,12 @@ describe('auth-middleware.js', () => {
     const passport = require('passport');
     const authMiddleware = require('../../src/auth/auth-middleware');
 
-    jest.spyOn(passport, 'authenticate').mockImplementation(
-      (_strategy, _options, callback) =>
-        () =>
+    jest
+      .spyOn(passport, 'authenticate')
+      .mockImplementation(
+        (_strategy, _options, callback) => () =>
           callback(new Error('passport internal error'), null)
-    );
+      );
 
     const middleware = authMiddleware('http');
     const req = {};

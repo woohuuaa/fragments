@@ -4,7 +4,7 @@ const app = require('../../src/app');
 const username = 'test-user1@fragments-testing.com';
 const password = 'test-password1';
 
-describe('GET /v1/fragments/:id.ext', () => { 
+describe('GET /v1/fragments/:id.ext', () => {
   test('authenticated users can convert markdown fragments to html', async () => {
     const markdown = '# Hello World';
 

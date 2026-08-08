@@ -40,7 +40,7 @@ describe('GET /v1/fragments', () => {
     expect(getRes.body.fragments).toContain(postRes.body.fragment.id);
   });
 
-  // If a valid username/password pair is used with the query parameter expand=1, 
+  // If a valid username/password pair is used with the query parameter expand=1,
   // it should return an array of fragment objects with all the metadata for each fragment
   test('authenticated users get expanded fragments with expand=1', async () => {
     const body = Buffer.from('hello expand');

@@ -66,7 +66,9 @@ describe('GET /v1/fragments/:id/info', () => {
 
   // If a valid username/password pair is used but the fragment ID does not exist, it should return a 404 error
   test('authenticated users get 404 for missing fragment metadata', async () => {
-    const res = await request(app).get('/v1/fragments/nonexistent-id/info').auth(username, password);
+    const res = await request(app)
+      .get('/v1/fragments/nonexistent-id/info')
+      .auth(username, password);
 
     expect(res.statusCode).toBe(404);
     expect(res.body.status).toBe('error');

@@ -6,9 +6,6 @@ const wait = async (ms = 50) => new Promise((resolve) => setTimeout(resolve, ms)
 
 const validTypes = [
   `text/plain`,
-  /*
-   Currently, only text/plain is supported. Others will be added later.
-
   `text/markdown`,
   `text/html`,
   `application/json`,
@@ -16,7 +13,6 @@ const validTypes = [
   `image/jpeg`,
   `image/webp`,
   `image/gif`,
-  */
 ];
 
 describe('Fragment class', () => {
@@ -121,6 +117,13 @@ describe('Fragment class', () => {
     test('common text types are supported, with and without charset', () => {
       expect(Fragment.isSupportedType('text/plain')).toBe(true);
       expect(Fragment.isSupportedType('text/plain; charset=utf-8')).toBe(true);
+      expect(Fragment.isSupportedType('text/markdown')).toBe(true);
+      expect(Fragment.isSupportedType('text/html')).toBe(true);
+      expect(Fragment.isSupportedType('application/json')).toBe(true);
+      expect(Fragment.isSupportedType('image/png')).toBe(true);
+      expect(Fragment.isSupportedType('image/jpeg')).toBe(true);
+      expect(Fragment.isSupportedType('image/webp')).toBe(true);
+      expect(Fragment.isSupportedType('image/gif')).toBe(true);
     });
 
     test('other types are not supported', () => {
@@ -128,6 +131,8 @@ describe('Fragment class', () => {
       expect(Fragment.isSupportedType('application/msword')).toBe(false);
       expect(Fragment.isSupportedType('audio/webm')).toBe(false);
       expect(Fragment.isSupportedType('video/ogg')).toBe(false);
+      expect(Fragment.isSupportedType('image/svg+xml')).toBe(false);
+      expect(Fragment.isSupportedType('image/tiff')).toBe(false);
     });
   });
 
@@ -167,6 +172,34 @@ describe('Fragment class', () => {
         size: 0,
       });
       expect(fragment.formats).toEqual(['text/plain']);
+    });
+    test('markdown formats include markdown, html, and plain text', () => {
+      const fragment = new Fragment({
+        ownerId: '1234',
+        type: 'text/markdown',
+      });
+
+      expect(fragment.formats).toEqual(['text/markdown', 'text/html', 'text/plain']);
+    });
+    test('JSON formats include JSON and plain text', () => {
+      const fragment = new Fragment({
+        ownerId: '1234',
+        type: 'application/json',
+      });
+
+      expect(fragment.formats).toEqual(['application/json', 'text/plain']);
+    });
+    test('image fragments support all image output formats', () => {
+      const imageFormats = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
+
+      imageFormats.forEach((type) => {
+        const fragment = new Fragment({
+          ownerId: '1234',
+          type: type,
+        });
+
+        expect(fragment.formats).toEqual(imageFormats);
+      });
     });
   });
 

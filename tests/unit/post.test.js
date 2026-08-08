@@ -73,15 +73,24 @@ describe('POST /v1/fragments', () => {
     expect(res.body.fragment.size).toBe(Buffer.byteLength(body));
   });
 
-  // Image fragments are not supported yet, so the server should return 415 Unsupported Media Type
-  test('image fragments are not supported yet', async () => {
-    const res = await request(app)
-      .post('/v1/fragments')
-      .auth('test-user1@fragments-testing.com', 'test-password1')
-      .set('Content-Type', 'image/png')
-      .send(Buffer.from([1, 2, 3]));
+  // Image fragments should be accepted and the type and size should be correct in the response
+  test('authenticated users can create an image fragment', async () => {
+    const imageTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
 
-    expect(res.statusCode).toBe(415);
+    for (const type of imageTypes) {
+      const body = Buffer.from([1, 2, 3]);
+
+      const res = await request(app)
+        .post('/v1/fragments')
+        .auth('test-user1@fragments-testing.com', 'test-password1')
+        .set('Content-Type', type)
+        .send(body);
+
+      expect(res.statusCode).toBe(201);
+      expect(res.body.status).toBe('ok');
+      expect(res.body.fragment.type).toBe(type);
+      expect(res.body.fragment.size).toBe(body.length);
+    }
   });
 
   // The response should include the fragment metadata with id, ownerId, created, updated, type, and size properties

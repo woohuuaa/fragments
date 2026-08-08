@@ -6,6 +6,19 @@ const contentType = require('content-type');
 
 const logger = require('../logger');
 
+const imageFormats = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
+
+const formatsByType = {
+  'text/plain': ['text/plain'],
+  'text/markdown': ['text/markdown', 'text/html', 'text/plain'],
+  'text/html': ['text/html', 'text/plain'],
+  'application/json': ['application/json', 'text/plain'],
+  'image/png': imageFormats,
+  'image/jpeg': imageFormats,
+  'image/webp': imageFormats,
+  'image/gif': imageFormats,
+};
+
 // Functions for working with fragment metadata/data using our DB
 const {
   readFragment,
@@ -145,8 +158,7 @@ class Fragment {
    * @returns {Array<string>} list of supported mime types
    */
   get formats() {
-    if (this.mimeType === 'text/plain') return ['text/plain'];
-    return [];
+    return formatsByType[this.mimeType] || [this.mimeType];
   }
 
   /**
@@ -158,7 +170,7 @@ class Fragment {
     try {
       const { type } = contentType.parse(value);
 
-      return type.startsWith('text/') || type === 'application/json';
+      return type.startsWith('text/') || type in formatsByType;
     } catch {
       return false;
     }

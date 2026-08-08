@@ -6,11 +6,15 @@ const password = 'test-password1';
 
 describe('GET /v1/fragments/:id', () => {
   // If the request is missing the Authorization header, it should be forbidden
-  test('unauthenticated requests are denied', () => request(app).get('/v1/fragments/random-id').expect(401));
+  test('unauthenticated requests are denied', () =>
+    request(app).get('/v1/fragments/random-id').expect(401));
 
   // If the wrong username/password pair are used (no such user), it should be forbidden
   test('incorrect credentials are denied', () =>
-    request(app).get('/v1/fragments/random-id').auth('invalid@email.com', 'incorrect_password').expect(401));
+    request(app)
+      .get('/v1/fragments/random-id')
+      .auth('invalid@email.com', 'incorrect_password')
+      .expect(401));
 
   // Using a valid username/password pair should return the fragment data for the given id
   test('authenticated users can get an existing fragment by id', async () => {
@@ -18,10 +22,10 @@ describe('GET /v1/fragments/:id', () => {
     const data = 'hello world';
 
     const postRes = await request(app)
-        .post('/v1/fragments')
-        .auth(username, password)
-        .set('Content-Type', 'text/plain')
-        .send(Buffer.from(data));
+      .post('/v1/fragments')
+      .auth(username, password)
+      .set('Content-Type', 'text/plain')
+      .send(Buffer.from(data));
 
     expect(postRes.statusCode).toBe(201);
 
@@ -41,17 +45,18 @@ describe('GET /v1/fragments/:id', () => {
     // Create a new fragment with the first user
     const data = 'private data';
 
-    const postRes = await request(app).post('/v1/fragments')
-        .auth(username, password)
-        .set('Content-Type', 'text/plain')
-        .send(Buffer.from(data));
+    const postRes = await request(app)
+      .post('/v1/fragments')
+      .auth(username, password)
+      .set('Content-Type', 'text/plain')
+      .send(Buffer.from(data));
 
     const id = postRes.body.fragment.id;
 
     // Try to retrieve the fragment with a different user
     const res = await request(app)
-        .get(`/v1/fragments/${id}`)
-        .auth('test-user2@fragments-testing', 'test-password2');
+      .get(`/v1/fragments/${id}`)
+      .auth('test-user2@fragments-testing', 'test-password2');
 
     expect(res.statusCode).toBe(404);
   });
@@ -63,4 +68,4 @@ describe('GET /v1/fragments/:id', () => {
     expect(res.body.status).toBe('error');
     expect(res.body.error.code).toBe(404);
   });
-})
+});
