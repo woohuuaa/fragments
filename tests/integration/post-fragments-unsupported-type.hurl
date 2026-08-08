@@ -1,10 +1,13 @@
 # tests/integration/post-fragments-unsupported-type.hurl
+
 # Authenticated POST to /v1/fragments with an unsupported Content-Type
 POST http://localhost:8080/v1/fragments
-# Images are not supported until Assignment 3
-Content-Type: image/png
+
+Content-Type: application/pdf
+
 [BasicAuth]
 test-user1@fragments-testing.com:test-password1
+
 # Send a fake binary-like body
 `not really a png`
 
