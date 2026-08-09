@@ -120,8 +120,8 @@ HTTP/1.1 200
 [Asserts]
 jsonpath "$.status" == "ok"
 jsonpath "$.fragments" isCollection
-jsonpath "$.fragments" includes "{{fragment1_id}}"
-jsonpath "$.fragments" includes "{{fragment2_id}}"
+jsonpath "$.fragments" contains "{{fragment1_id}}"
+jsonpath "$.fragments" contains "{{fragment2_id}}"
 
 
 # 6. Delete the first fragment
@@ -162,7 +162,7 @@ HTTP/1.1 200
 [Asserts]
 jsonpath "$.status" == "ok"
 jsonpath "$.fragments" isCollection
-jsonpath "$.fragments" not includes "{{fragment1_id}}"
-jsonpath "$.fragments" includes "{{fragment2_id}}"
+jsonpath "$.fragments" not contains "{{fragment1_id}}"
+jsonpath "$.fragments" contains "{{fragment2_id}}"
 
 

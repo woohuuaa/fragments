@@ -14,6 +14,8 @@ const { createSuccessResponse } = require('../response.js');
 // Create a router that we can use to mount our API
 const router = express.Router();
 
+const { hostname } = require('os');
+
 /**
  * Expose all of our API routes on /v1/* to include an API version.
  */
@@ -35,6 +37,8 @@ router.get('/', (req, res) => {
       githubUrl: 'https://github.com/woohuuaa/fragments',
       version,
       timestamp: new Date().toISOString(),
+      // Include the hostname in the response
+      hostname: hostname(),
     }),
   });
 });
