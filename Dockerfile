@@ -54,9 +54,6 @@ COPY --chown=node:node ./src ./src
 # Change ownership of files AND Copy HTPASSWD file
 COPY --chown=node:node ./tests/.htpasswd ./tests/.htpasswd
 
-# Switch to non-root user
-USER node
-
 # We run our service on port 8080
 EXPOSE 8080
 
@@ -64,7 +61,7 @@ EXPOSE 8080
 ENTRYPOINT ["tini", "--"]
 
 HEALTHCHECK --interval=3m --timeout=30s --retries=3 \
-    CMD curl -f http://localhost:8080/ || exit 1
+    CMD curl -f http://localhost:${PORT}/ || exit 1
 
 # Start the container by running our server
 CMD ["npm", "start"]
