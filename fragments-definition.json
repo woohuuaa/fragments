@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-2:840489313650:task-definition/fragments-task:2",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-2:840489313650:task-definition/fragments-task:3",
     "containerDefinitions": [
         {
             "name": "fragments-container",
@@ -28,6 +28,10 @@
                 {
                     "name": "FRAGMENTS_LOG_LEVEL",
                     "value": "info"
+                },
+                {
+                    "name": "API_URL",
+                    "value": "http://fragments-lb-708094580.us-east-2.elb.amazonaws.com"
                 },
                 {
                     "name": "PORT",
@@ -71,7 +75,7 @@
     "taskRoleArn": "arn:aws:iam::840489313650:role/LabRole",
     "executionRoleArn": "arn:aws:iam::840489313650:role/LabRole",
     "networkMode": "awsvpc",
-    "revision": 2,
+    "revision": 3,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -109,8 +113,8 @@
     "placementConstraints": [],
     "compatibilities": [
         "EC2",
-        "MANAGED_INSTANCES",
-        "FARGATE"
+        "FARGATE",
+        "MANAGED_INSTANCES"
     ],
     "runtimePlatform": {
         "cpuArchitecture": "X86_64",
@@ -121,7 +125,7 @@
     ],
     "cpu": "256",
     "memory": "512",
-    "registeredAt": "2026-08-09T22:04:19.576Z",
+    "registeredAt": "2026-08-09T23:39:27.653Z",
     "registeredBy": "arn:aws:iam::840489313650:user/odl_user_2218048",
     "enableFaultInjection": false,
     "tags": []
