@@ -17,7 +17,7 @@ on:
 jobs:
   lint:
     # Give your job a name that will show up in the GitHub Actions web UI
-    name: ESLint
+    name: ESLint and Prettier
     # We'll run this on a Linux (Ubuntu) VM, since we'll deploy on Linux too.
     runs-on: ubuntu-latest
     # We run these steps one after the other, and if any fail, we stop the process
@@ -40,10 +40,12 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run:
-          npm run lint
+        run: npm run lint
 
-          # Lint our Dockerfile using Hadolint
+      - name: Check formatting
+        run: npm run format:check
+
+  # Lint our Dockerfile using Hadolint
 
   dockerfile-lint:
     name: Dockerfile Lint

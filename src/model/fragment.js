@@ -6,16 +6,19 @@ const contentType = require('content-type');
 
 const logger = require('../logger');
 
-const imageFormats = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
+const imageFormats = ['image/png', 'image/jpeg', 'image/webp', 'image/avif', 'image/gif'];
 
 const formatsByType = {
   'text/plain': ['text/plain'],
   'text/markdown': ['text/markdown', 'text/html', 'text/plain'],
   'text/html': ['text/html', 'text/plain'],
-  'application/json': ['application/json', 'text/plain'],
+  'text/csv': ['text/csv', 'text/plain', 'application/json'],
+  'application/json': ['application/json', 'application/yaml', 'text/plain'],
+  'application/yaml': ['application/yaml', 'text/plain'],
   'image/png': imageFormats,
   'image/jpeg': imageFormats,
   'image/webp': imageFormats,
+  'image/avif': imageFormats,
   'image/gif': imageFormats,
 };
 

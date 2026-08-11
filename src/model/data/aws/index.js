@@ -160,7 +160,7 @@ async function listFragments(ownerId, expand = false) {
   }
 }
 
-// Delete a fragment's metadata from MemoryDB and its data from S3
+// Delete a fragment's metadata from DynamoDB and its data from S3
 async function deleteFragment(ownerId, id) {
   const s3Params = {
     Bucket: process.env.AWS_S3_BUCKET_NAME,

@@ -1,4 +1,4 @@
-const { Fragment } = require('../../src/model/fragment');
+﻿const { Fragment } = require('../../src/model/fragment');
 
 // Wait for a certain number of ms (default 50). Feel free to change this value
 // if it isn't long enough for your test runs. Returns a Promise.
@@ -181,16 +181,16 @@ describe('Fragment class', () => {
 
       expect(fragment.formats).toEqual(['text/markdown', 'text/html', 'text/plain']);
     });
-    test('JSON formats include JSON and plain text', () => {
+    test('JSON formats include JSON, YAML, and plain text', () => {
       const fragment = new Fragment({
         ownerId: '1234',
         type: 'application/json',
       });
 
-      expect(fragment.formats).toEqual(['application/json', 'text/plain']);
+      expect(fragment.formats).toEqual(['application/json', 'application/yaml', 'text/plain']);
     });
     test('image fragments support all image output formats', () => {
-      const imageFormats = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
+      const imageFormats = ['image/png', 'image/jpeg', 'image/webp', 'image/avif', 'image/gif'];
 
       imageFormats.forEach((type) => {
         const fragment = new Fragment({

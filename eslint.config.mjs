@@ -1,8 +1,11 @@
-import js from '@eslint/js';
+﻿import js from '@eslint/js';
 import globals from 'globals';
 import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
+  {
+    ignores: ['aws/**', 'coverage/**', 'node_modules/**', 'dist/**', '.ssh/**'],
+  },
   {
     files: ['**/*.{js,mjs,cjs}'],
     plugins: { js },
