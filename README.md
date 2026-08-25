@@ -1,6 +1,33 @@
 # fragments
 
-Fragments back-end API
+Fragments is a cloud-based REST API for storing, retrieving, updating, deleting, and converting small pieces of text, structured data, and images. A fragment consists of metadata, such as its owner, MIME type, size, and timestamps, plus the original binary data. All fragment operations are authenticated, and each user's data is isolated using a hashed owner ID.
+
+## Project Overview
+
+The service is built with Node.js and Express and supports text formats, JSON, YAML, and common image formats. Clients can create fragments with raw HTTP request bodies, retrieve fragment data or metadata, update and delete existing fragments, and request supported format conversions such as Markdown to HTML, CSV to JSON, JSON to YAML, or PNG to JPEG.
+
+The production data layer uses AWS services:
+
+- Amazon Cognito authenticates users with JWT bearer tokens.
+- Amazon DynamoDB stores fragment metadata.
+- Amazon S3 stores the original fragment binary data.
+- Amazon ECR stores versioned Docker images.
+- Amazon ECS runs the containerized API service.
+- Elastic Load Balancing distributes HTTP requests across ECS tasks.
+- Amazon CloudWatch collects container and application logs.
+
+Local development uses Docker Compose to run the API with DynamoDB Local and MiniStack S3. The data strategy is configurable, allowing the service to use either the in-memory backend or AWS-compatible storage.
+
+## CI/CD
+
+GitHub Actions provides continuous integration and delivery:
+
+- Every commit or pull request to `main` runs ESLint, Prettier, unit tests, Hurl integration tests, Docker Compose services, and Dockerfile linting.
+- Successful commits build and publish Docker images to Docker Hub.
+- Pushing a version tag such as `v0.7.3` builds and pushes a versioned image to Amazon ECR.
+- The tagged ECR image is added to a new ECS task definition revision and automatically deployed to the ECS service.
+
+Unit tests use Jest and Supertest. Integration tests use Hurl to send real HTTP requests to the Docker Compose environment using HTTP Basic Authentication, DynamoDB Local, and MiniStack S3.
 
 ## Quick Setup
 
@@ -14,7 +41,7 @@ This installs the app dependencies and the dev tools from `package.json`.
 
 ## Script Notes
 
-All server commands run `src/server.js`.
+All server commands start the application through `src/index.js`.
 
 Default local URL: `http://localhost:8080`
 
